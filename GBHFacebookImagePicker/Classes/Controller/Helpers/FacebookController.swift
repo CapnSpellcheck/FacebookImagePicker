@@ -140,8 +140,8 @@ final class FacebookController {
             return
         }
         var path = identifier == FacebookController.idTaggedPhotosAlbum
-            ? "/me/photos?fields=picture,source,id"
-            : "/\(identifier)/photos?fields=picture,source,id"
+            ? "/me/photos?fields=picture,source,id,images"
+            : "/\(identifier)/photos?fields=picture,source,id,images"
         if let afterPath = after {
             path = path.appendingFormat("&after=%@", afterPath)
         }
@@ -197,15 +197,17 @@ final class FacebookController {
                 if let photoDic = photo as? [String: AnyObject],
                     let identifier = photoDic["id"] as? String,
                     let picture = photoDic["picture"] as? String,
-                    let source = photoDic["source"] as? String {
+                    let images = photoDic["images"] as? Array<Dictionary<AnyHashable, Any>> {
                     
                     // Build Picture model
                     let photoObject = FacebookImage(picture: picture,
                                                     imgId: identifier,
-                                                    source: source)
-                    album.photos.append(photoObject)
-                }
-            }
+                                                    images: images)
+                    if Int(photoObject.size.width*photoObject.size.height) > FacebookImagePicker.pickerConfig.minimumImagePixels {
+                        album.photos.append(photoObject)
+                    }
+               }
+         }
         }
     }
     

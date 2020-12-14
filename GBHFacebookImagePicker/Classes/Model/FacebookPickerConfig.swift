@@ -116,6 +116,8 @@ public struct FacebookPickerConfig {
 
     /// Text-specific configuration.
     public var textConfig = TextConfig()
+    
+    public var minimumImagePixels: Int = 0
 
     // MARK: - Internal
 

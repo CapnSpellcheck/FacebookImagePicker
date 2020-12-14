@@ -23,6 +23,8 @@ public class FacebookImage {
     /// Full size source picture url
     public var fullSizeUrl: String?
     
+    public let size: CGSize
+    
     /// Picture id
     public var imageId: String?
     
@@ -34,10 +36,20 @@ public class FacebookImage {
     ///   - picture: the image string url for the default size 
     ///   - imgId: the image id 
     ///   - source: the image string url for the full size 
-    init(picture: String, imgId: String, source: String) {
+    init(picture: String, imgId: String, images: Array<Dictionary<AnyHashable, Any>>) {
         self.imageId = imgId
         self.normalSizeUrl = picture
-        self.fullSizeUrl = source
+        var highestWidth = 0
+        var size = CGSize.zero
+        for imageObj in images {
+            let width = imageObj["width"] as! Int
+            if width > highestWidth {
+                fullSizeUrl = imageObj["source"] as? String
+                size = CGSize(width: width, height: imageObj["height"] as! Int)
+                highestWidth = width
+            }
+        }
+        self.size = size
     }
     
     // MARK: - Download
