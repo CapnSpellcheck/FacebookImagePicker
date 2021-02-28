@@ -114,7 +114,7 @@ final class FacebookController {
                     // Build Album model
                     if let coverUrl = URL(string: albumUrlPath) {
                         let albm = FacebookAlbum(name: albumName,
-                                                 count: albumCount,
+//                                                 count: albumCount,
                                                  coverUrl: coverUrl,
                                                  albmId: albumId)
                         self.albumList.append(albm)
